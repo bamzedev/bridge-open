@@ -6,7 +6,6 @@ import (
 	"net/http"
 	"os"
 	"strings"
-
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
@@ -22,9 +21,11 @@ type Configuration struct {
 type Transaction struct {
 	Signatures           [2]string `json:"signatures"`
 	LockTransactionHash  string    `json:"lockTransactionHash"`
+	IsBurn               bool      `json:"isBurn"`
 	ClaimTransactionHash string    `json:"claimTransactionHash"`
 	TokenAddress         string    `json:"tokenAddress"`
 	Symbol               string    `json:"symbol"`
+	Name                 string    `json:"name"`
 	Amount               string    `json:"amount"`
 	Recipient            string    `json:"recipient"`
 	FromChainId          string    `json:"fromChainId"`

@@ -34,6 +34,7 @@ function App() {
     toChainId: string;
     date: number;
     claimed: boolean;
+    isBurn: boolean;
   }
 
   async function requestAccount() {
@@ -129,10 +130,11 @@ function App() {
     console.log(tokenToBridge)
     e.preventDefault();
     let token = new ethers.Contract(tokenToBridge, wtAbi.abi, provider);
-    if ((await token.owner()) == bridgeContract.address) {
-      validateLockOrBurn(tokenToBridge, await burnTokens(provider, bridgeContract, token, amount));
+    let isBurn = await token.owner() == bridgeContract.address
+    if (isBurn) {
+      validateLockOrBurn(tokenToBridge, await burnTokens(provider, bridgeContract, token, amount), isBurn);
     } else {
-      validateLockOrBurn(tokenToBridge, await lockTokens(provider, bridgeContract, token, amount));
+      validateLockOrBurn(tokenToBridge, await lockTokens(provider, bridgeContract, token, amount), isBurn);
     }
   };
 
@@ -144,7 +146,7 @@ function App() {
     }
   };
 
-  const validateLockOrBurn = async (tokenToBridge, receipt) => {
+  const validateLockOrBurn = async (tokenToBridge, receipt, isBurn) => {
     let toChainId;
     if (chainId == "3") {
       toChainId = "4";
@@ -153,7 +155,8 @@ function App() {
     }
     let wtc = new ethers.Contract(tokenToBridge, wtAbi.abi, provider);
     let symbol = await wtc.symbol();
-    validateDeposit(receipt.hash, chainId, toChainId, symbol).then(() => {
+    let name = await wtc.name();
+    validateDeposit(receipt.hash, chainId, toChainId, symbol, name, isBurn).then(() => {
       updateHistory();
     });
   };

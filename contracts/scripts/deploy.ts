@@ -17,7 +17,7 @@ async function deployBridgeContract() {
   await run("compile");
   console.log("Deploying...");
   const Bridge = await ethers.getContractFactory("Bridge");
-  const bridge = await Bridge.deploy(['0xEaDc3D0D313f90D2E9A6B8982b71eB05e5c09D8c','0x80211bE2056A5C6C00aecDb5dfCd43F243E4d2E0']);
+  const bridge = await Bridge.deploy([process.env.VALIDATOR1ADDRESS, process.env.VALIDATOR2ADDRESS]);
   //const WrappedTether = await ethers.getContractFactory("WrappedToken");
   //const wtoken = await WrappedTether.deploy("Test Token", "TESTT");
   await bridge.deployed();

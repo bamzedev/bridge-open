@@ -1,7 +1,6 @@
 package service
 
 import (
-	"fmt"
 	"log"
 	"math/big"
 	"time"
@@ -33,27 +32,48 @@ func getContractFromTransaction(tx Transaction) *Service {
 }
 
 func findLockTransaction(tx Transaction) (Transaction, error) {
-	locks, err := getContractFromTransaction(tx).FilterTokenLock(&bind.FilterOpts{}, nil, nil)
-	if err != nil {
-		panic(err)
-	}
-
-	found := false
-	for locks.Next() {
-		event := locks.Event
-		if event.Raw.TxHash.String() == tx.LockTransactionHash {
-			fmt.Println("FOUND")
-			found = true
-			tx.LockTransactionHash = event.Raw.TxHash.String()
-			tx.Recipient = event.From.String()
-			tx.TokenAddress = event.SourceTokenAddress.String()
-			tx.Amount = event.Amount.String()
-			break
+	if(tx.IsBurn){
+		locks, err := getContractFromTransaction(tx).FilterTokenBurn(&bind.FilterOpts{}, nil, nil)
+		if err != nil {
+			panic(err)
 		}
-	}
-
-	if !found {
-		return Transaction{}, err
+		found := false
+		for locks.Next() {
+			event := locks.Event
+			if event.Raw.TxHash.String() == tx.LockTransactionHash {
+				found = true
+				tx.LockTransactionHash = event.Raw.TxHash.String()
+				tx.Recipient = event.From.String()
+				tx.TokenAddress = event.SourceTokenAddress.String()
+				tx.Amount = event.Amount.String()
+				break
+			}
+		}
+	
+		if !found {
+			return Transaction{}, err
+		}
+	}else{
+		locks, err := getContractFromTransaction(tx).FilterTokenLock(&bind.FilterOpts{}, nil, nil)
+		if err != nil {
+			panic(err)
+		}
+		found := false
+		for locks.Next() {
+			event := locks.Event
+			if event.Raw.TxHash.String() == tx.LockTransactionHash {
+				found = true
+				tx.LockTransactionHash = event.Raw.TxHash.String()
+				tx.Recipient = event.From.String()
+				tx.TokenAddress = event.SourceTokenAddress.String()
+				tx.Amount = event.Amount.String()
+				break
+			}
+		}
+	
+		if !found {
+			return Transaction{}, err
+		}
 	}
 	return tx, nil
 }
@@ -67,20 +87,28 @@ func signTransaction(tx Transaction) (Transaction, error) {
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Println(tx)
 	uint256Type, _ := abi.NewType("uint256", "", nil)
 	args := abi.Arguments{
 		{Type: uint256Type},
 	}
 	transaction := []byte(tx.LockTransactionHash)
 	addressToken := common.HexToAddress(tx.TokenAddress).Bytes()
+	var symbol []byte
+	var name []byte
+	if(tx.IsBurn){
+		name = []byte(tx.Name)
+		symbol = []byte(tx.Symbol)
+	}else{
+		name = []byte("Wrapped " + tx.Name)
+		symbol = []byte("W" + tx.Symbol)
+	}
+	
 	n, _ := new(big.Int).SetString(tx.Amount, 0)
 	n1, _ := new(big.Int).SetString(tx.ToChainId, 0)
 	amount, _ := args.Pack(n)
 	toChainId, _ := args.Pack(n1)
 	addressReceiver := common.HexToAddress(tx.Recipient).Bytes()
-fmt.Println(tx.ToChainId, tx.LockTransactionHash, tx.TokenAddress, tx.Amount, addressReceiver)
-	hash := crypto.Keccak256Hash(toChainId, transaction, addressToken, amount, addressReceiver)
+	hash := crypto.Keccak256Hash(toChainId, transaction, addressToken, name, symbol, amount, addressReceiver)
 	msg := crypto.Keccak256([]byte("\x19Ethereum Signed Message:\n32"), hash.Bytes())
 	signature1, err := crypto.Sign(msg, validator1PrivateKey)
 	if err != nil {
