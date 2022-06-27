@@ -1,0 +1,6 @@
+{
+    "Validator1PrivateKey": "PRIVATE KEY HERE",
+    "Validator2PrivateKey": "PRIVATE KEY HERE",
+    "BridgeContractAddressRopsten": "ROPSTEN BRIDGE CONTRACT ADDRESS HERE",
+    "BridgeContractAddressKovan": "KOVAN BRIDGE CONTRACT ADRESS HERE"
+}
