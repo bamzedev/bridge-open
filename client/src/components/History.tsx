@@ -23,7 +23,7 @@ export function History(props) {
                 <Container style={{ display: "flex", width: "49rem" }}>
                   <ListGroup>
                     {pendingTransactions(props.transactions).map((tx) => (
-                      <ListGroup.Item key={tx.lockTransactionHash} id={tx.lockTransactionHash} variant="secondary" style={{ height: "3rem", width: "47rem" }} className="mb-1">
+                      <ListGroup.Item key={tx.depositTransactionHash} id={tx.depositTransactionHash} variant="secondary" style={{ height: "3rem", width: "47rem" }} className="mb-1">
                         <Row>
                           <Col>
                             <h4>{ethers.utils.formatEther(tx.amount).toString() + " " + tx.symbol}</h4>
@@ -31,11 +31,11 @@ export function History(props) {
                           <Col>
                             <h4>
                               {tx.fromChainId === "4" ? (
-                                <a href={"http://rinkeby.etherscan.io/tx/" + tx.lockTransactionHash} target="_blank" rel="noreferrer">
+                                <a href={"http://rinkeby.etherscan.io/tx/" + tx.depositTransactionHash} target="_blank" rel="noreferrer">
                                   Rinkeby
                                 </a>
                               ) : (
-                                <a href={"http://ropsten.etherscan.io/tx/" + tx.lockTransactionHash} target="_blank" rel="noreferrer">
+                                <a href={"http://ropsten.etherscan.io/tx/" + tx.depositTransactionHash} target="_blank" rel="noreferrer">
                                   Ropsten
                                 </a>
                               )}
@@ -56,7 +56,7 @@ export function History(props) {
                               <Button
                                 size="sm"
                                 onClick={() => {
-                                  tx.toChainId === props.chainId ? props.handleTokenClaim(tx.lockTransactionHash) : props.switchNetwork();
+                                  tx.toChainId === props.chainId ? props.handleTokenClaim(tx.depositTransactionHash) : props.switchNetwork();
                                 }}
                               >
                                 {tx.toChainId === props.chainId ? "Claim" : "Switch"}
@@ -81,11 +81,11 @@ export function History(props) {
                           <Col>
                             <h4>
                               {tx.fromChainId === "4" ? (
-                                <a href={"http://rinkeby.etherscan.io/tx/" + tx.lockTransactionHash} target="_blank" rel="noreferrer">
+                                <a href={"http://rinkeby.etherscan.io/tx/" + tx.depositTransactionHash} target="_blank" rel="noreferrer">
                                   Rinkeby
                                 </a>
                               ) : (
-                                <a href={"http://ropsten.etherscan.io/tx/" + tx.lockTransactionHash} target="_blank" rel="noreferrer">
+                                <a href={"http://ropsten.etherscan.io/tx/" + tx.depositTransactionHash} target="_blank" rel="noreferrer">
                                   Ropsten
                                 </a>
                               )}

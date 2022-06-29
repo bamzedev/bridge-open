@@ -3,11 +3,11 @@ package service
 import (
 	"encoding/json"
 	"errors"
+	"github.com/gin-contrib/cors"
+	"github.com/gin-gonic/gin"
 	"net/http"
 	"os"
 	"strings"
-	"github.com/gin-contrib/cors"
-	"github.com/gin-gonic/gin"
 )
 
 type Configuration struct {
@@ -19,19 +19,19 @@ type Configuration struct {
 }
 
 type Transaction struct {
-	Signatures           [2]string `json:"signatures"`
-	LockTransactionHash  string    `json:"lockTransactionHash"`
-	IsBurn               bool      `json:"isBurn"`
-	ClaimTransactionHash string    `json:"claimTransactionHash"`
-	TokenAddress         string    `json:"tokenAddress"`
-	Symbol               string    `json:"symbol"`
-	Name                 string    `json:"name"`
-	Amount               string    `json:"amount"`
-	Recipient            string    `json:"recipient"`
-	FromChainId          string    `json:"fromChainId"`
-	ToChainId            string    `json:"toChainId"`
-	Date                 int64     `json:"date"`
-	Claimed              bool      `json:"claimed"`
+	Signatures             [2]string `json:"signatures"`
+	DepositTransactionHash string    `json:"depositTransactionHash"`
+	IsBurn                 bool      `json:"isBurn"`
+	ClaimTransactionHash   string    `json:"claimTransactionHash"`
+	TokenAddress           string    `json:"tokenAddress"`
+	Symbol                 string    `json:"symbol"`
+	Name                   string    `json:"name"`
+	Amount                 string    `json:"amount"`
+	Recipient              string    `json:"recipient"`
+	FromChainId            string    `json:"fromChainId"`
+	ToChainId              string    `json:"toChainId"`
+	Date                   int64     `json:"date"`
+	Claimed                bool      `json:"claimed"`
 }
 
 var Transactions = make(map[string]Transaction)
@@ -80,7 +80,7 @@ func updateTransaction(context *gin.Context) {
 	if err != nil {
 		context.IndentedJSON(http.StatusNotFound, err)
 	}
-	Transactions[updatedTransaction.LockTransactionHash] = updatedTransaction
+	Transactions[updatedTransaction.DepositTransactionHash] = updatedTransaction
 	context.IndentedJSON(http.StatusOK, updatedTransaction)
 }
 
@@ -90,7 +90,7 @@ func addTransaction(context *gin.Context) {
 	if err := context.BindJSON(&newTransaction); err != nil {
 		return
 	}
-	_, err := getTransactionByHash(newTransaction.LockTransactionHash)
+	_, err := getTransactionByHash(newTransaction.DepositTransactionHash)
 	if err == nil {
 		context.IndentedJSON(http.StatusBadRequest, gin.H{"message": "transaction already added"})
 		return
@@ -99,7 +99,7 @@ func addTransaction(context *gin.Context) {
 	if err != nil {
 		panic(err)
 	}
-	Transactions[signedTransaction.LockTransactionHash] = signedTransaction
+	Transactions[signedTransaction.DepositTransactionHash] = signedTransaction
 	context.IndentedJSON(http.StatusCreated, signedTransaction)
 }
 

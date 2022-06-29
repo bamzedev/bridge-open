@@ -4,39 +4,38 @@ import "./WrappedToken.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
 contract Bridge is Ownable{
-    address payable feeCollector = payable(0x80211bE2056A5C6C00aecDb5dfCd43F243E4d2E0);
+    address payable private feeCollector;
+    uint256 public fee;
     mapping (string => bool) public isProccessed;
     mapping(string => address[]) public signaturesForTransaction;
     mapping(address => address) public wrappedTokenContracts;
     mapping(address => address) public nativeTokenContracts;
     mapping (address => bool) private isValidator;
     event NewTokenDeployed(address indexed tokenContract);
+    event TokenMint(address indexed from, address indexed sourceTokenAddress, uint256 amount);
     event TokenUnlock(address indexed from, address indexed sourceTokenAddress, uint256 amount);
-    event TokenLock(address indexed from, address indexed sourceTokenAddress, uint256 amount);
     event TokenBurn(address indexed from, address indexed sourceTokenAddress, uint256 amount);
+    event TokenLock(address indexed from, address indexed sourceTokenAddress, uint256 amount);
 
-    constructor (address[] memory _validators){
+    constructor (address[] memory _validators, address _feeColector, uint256 _fee){
         for (uint256 i = 0; i < _validators.length; i++) {
             isValidator[_validators[i]]=true;
         }
+        feeCollector = payable(_feeColector);
+        fee = _fee;
     }
 
     modifier enoughFee() {
-        require(msg.value==1, "not enough ether");
+        require(msg.value == fee, "not enough ether");
         _;
     }
 
     modifier notProccessed(string memory _transaction) {
-        require(!isProccessed[_transaction], "Tokens already unlocked.");
+        require(!isProccessed[_transaction], "Transaction already processed");
         _;
     }
 
-    modifier noContract(address _nativeTokenAddress){
-        require(wrappedTokenContracts[_nativeTokenAddress] == address(0),"Contract already exists");
-        _;
-    }
-
-    function validate(string memory _transaction, address _token, string memory _name, string memory _symbol, uint256 _amount, address _receiver, uint8[]memory v, bytes32[]memory r, bytes32[]memory s) internal{
+    function validateMint(string memory _transaction, address _token, string memory _name, string memory _symbol, uint256 _amount, address _receiver, uint8[]memory v, bytes32[]memory r, bytes32[]memory s) internal{
         bytes32 messageDigest = keccak256(abi.encodePacked("\x19Ethereum Signed Message:\n32",keccak256(abi.encodePacked(block.chainid,_transaction,_token, _name, _symbol, _amount,_receiver))));
         for (uint i = 0; i < v.length; i++) {
             address currentAddress = ecrecover(messageDigest, v[i], r[i], s[i]);
@@ -46,16 +45,26 @@ contract Bridge is Ownable{
         require(signaturesForTransaction[_transaction].length>1, "Need at least 2 signatures");
     }
 
-    function deployContract(address _nativeTokenAddress, string memory _name, string memory _symbol) private noContract(_nativeTokenAddress){
+    function validateUnlock(string memory _transaction, address _token, uint256 _amount, address _receiver, uint8[]memory v, bytes32[]memory r, bytes32[]memory s) internal{
+        bytes32 messageDigest = keccak256(abi.encodePacked("\x19Ethereum Signed Message:\n32",keccak256(abi.encodePacked(block.chainid,_transaction,_token, _amount,_receiver))));
+        for (uint i = 0; i < v.length; i++) {
+            address currentAddress = ecrecover(messageDigest, v[i], r[i], s[i]);
+         require(isValidator[ecrecover(messageDigest, v[i], r[i], s[i])], "Wrong signature");
+            signaturesForTransaction[_transaction].push(currentAddress);            
+        }
+        require(signaturesForTransaction[_transaction].length>1, "Need at least 2 signatures");
+    }
+
+    function deployContract(address _nativeTokenAddress, string memory _name, string memory _symbol) private{
       address newTokenAddress = address(new WrappedToken(_name, _symbol));
       wrappedTokenContracts[_nativeTokenAddress] = newTokenAddress;
       nativeTokenContracts[newTokenAddress] = _nativeTokenAddress;
       emit NewTokenDeployed(wrappedTokenContracts[_nativeTokenAddress]);
     }
 
-    function unlockTokens(address _token, string memory _name, string memory _symbol, uint256 _amount, string memory _transaction, 
+    function unlockTokens(address _token, uint256 _amount, string memory _transaction, 
     uint8[]memory _v, bytes32[]memory _r, bytes32[]memory _s) public notProccessed(_transaction){
-        validate(_transaction, _token, _name, _symbol, _amount, msg.sender, _v, _r, _s); 
+        validateUnlock(_transaction, _token, _amount, msg.sender, _v, _r, _s); 
         WrappedToken token = WrappedToken(_token);
         isProccessed[_transaction]=true;
         token.transfer(msg.sender, _amount);
@@ -64,14 +73,14 @@ contract Bridge is Ownable{
 
     function mintTokens(address _nativeTokenAddress, string memory _name, string memory _symbol, uint256 _amount, string memory _transaction, 
     uint8[]memory _v, bytes32[]memory _r, bytes32[]memory _s) public notProccessed(_transaction){
-       validate(_transaction, _nativeTokenAddress, _name, _symbol, _amount, msg.sender, _v, _r, _s); 
+       validateMint(_transaction, _nativeTokenAddress, _name, _symbol, _amount, msg.sender, _v, _r, _s); 
        if(wrappedTokenContracts[_nativeTokenAddress]== address(0)){
         deployContract(_nativeTokenAddress, _name, _symbol);
        }
        WrappedToken wtoken = WrappedToken(wrappedTokenContracts[_nativeTokenAddress]);
        isProccessed[_transaction]=true;
        wtoken.mintTo(msg.sender, _amount);
-       emit TokenUnlock(msg.sender, address(wtoken), _amount);
+       emit TokenMint(msg.sender, address(wtoken), _amount);
     }
     
     function lock(address _owner, address _token, uint256 _amount, uint256 _deadline, uint8 _v, bytes32 _r, bytes32 _s) public payable enoughFee{

@@ -23,7 +23,7 @@ function App() {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
 
   interface Transaction {
-    lockTransactionHash: string;
+    depositTransactionHash: string;
     claimTransactionHash: string;
     signatures: string[];
     tokenAddress: string;
@@ -109,7 +109,6 @@ function App() {
   useEffect(() => {
     window.ethereum.on("accountsChanged", function (accounts) {
       setWalletAddress(accounts[0]);
-      console.log(walletAddress);
     });
   }, []);
 
@@ -126,8 +125,6 @@ function App() {
   };
 
   const handleBridge = async (e, tokenToBridge, amount) => {
-    console.log("handle bridge")
-    console.log(tokenToBridge)
     e.preventDefault();
     let token = new ethers.Contract(tokenToBridge, wtAbi.abi, provider);
     let isBurn = await token.owner() == bridgeContract.address
@@ -139,9 +136,9 @@ function App() {
   };
 
   const handleTokenClaim = async (txHash: string) => {
-    let lockTransaction = transactions.find((i) => i.lockTransactionHash === txHash);
-    if (lockTransaction !== undefined) {
-      await validateClaim(await claimTokens(provider, bridgeContract, lockTransaction));
+    let depositTransaction = transactions.find((i) => i.depositTransactionHash === txHash);
+    if (depositTransaction !== undefined) {
+      await validateClaim(await claimTokens(provider, bridgeContract, depositTransaction));
       updateHistory();
     }
   };

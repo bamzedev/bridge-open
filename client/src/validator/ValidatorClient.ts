@@ -26,12 +26,12 @@ export const validateDeposit = async(txHash, fromChain, toChain, symbol, name, i
           Accept: "application/json",
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ lockTransactionHash: txHash, isBurn: isBurn, fromChainId: fromChain, toChainId: toChain, symbol: symbol, name: name }),
+        body: JSON.stringify({ depositTransactionHash: txHash, isBurn: isBurn, fromChainId: fromChain, toChainId: toChain, symbol: symbol, name: name }),
       })
 };
 
 export const validateClaim = async(transaction)=>{
-    await fetch("http://localhost:8080/transactions/" + transaction.lockTransactionHash, {
+    await fetch("http://localhost:8080/transactions/" + transaction.depositTransactionHash, {
       method: "PATCH",
       headers: {
         Accept: "application/json",

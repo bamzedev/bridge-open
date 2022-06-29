@@ -27,7 +27,7 @@ var (
 )
 
 // ServiceABI is the input ABI used to generate the binding from.
-const ServiceABI = "[{\"inputs\":[{\"internalType\":\"address[]\",\"name\":\"_validators\",\"type\":\"address[]\"}],\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"tokenContract\",\"type\":\"address\"}],\"name\":\"NewTokenDeployed\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"previousOwner\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"OwnershipTransferred\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"from\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"sourceTokenAddress\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"TokenBurn\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"from\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"sourceTokenAddress\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"TokenLock\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"from\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"sourceTokenAddress\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"TokenUnlock\",\"type\":\"event\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_owner\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"_token\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"_amount\",\"type\":\"uint256\"},{\"internalType\":\"uint8\",\"name\":\"_v\",\"type\":\"uint8\"},{\"internalType\":\"bytes32\",\"name\":\"_r\",\"type\":\"bytes32\"},{\"internalType\":\"bytes32\",\"name\":\"_s\",\"type\":\"bytes32\"}],\"name\":\"burn\",\"outputs\":[],\"stateMutability\":\"payable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"string\",\"name\":\"\",\"type\":\"string\"}],\"name\":\"isProccessed\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_owner\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"_token\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"_amount\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"_deadline\",\"type\":\"uint256\"},{\"internalType\":\"uint8\",\"name\":\"_v\",\"type\":\"uint8\"},{\"internalType\":\"bytes32\",\"name\":\"_r\",\"type\":\"bytes32\"},{\"internalType\":\"bytes32\",\"name\":\"_s\",\"type\":\"bytes32\"}],\"name\":\"lock\",\"outputs\":[],\"stateMutability\":\"payable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_nativeTokenAddress\",\"type\":\"address\"},{\"internalType\":\"string\",\"name\":\"_name\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"_symbol\",\"type\":\"string\"},{\"internalType\":\"uint256\",\"name\":\"_amount\",\"type\":\"uint256\"},{\"internalType\":\"string\",\"name\":\"_transaction\",\"type\":\"string\"},{\"internalType\":\"uint8[]\",\"name\":\"_v\",\"type\":\"uint8[]\"},{\"internalType\":\"bytes32[]\",\"name\":\"_r\",\"type\":\"bytes32[]\"},{\"internalType\":\"bytes32[]\",\"name\":\"_s\",\"type\":\"bytes32[]\"}],\"name\":\"mintTokens\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"name\":\"nativeTokenContracts\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"owner\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"renounceOwnership\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"string\",\"name\":\"\",\"type\":\"string\"},{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"signaturesForTransaction\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"transferOwnership\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_token\",\"type\":\"address\"},{\"internalType\":\"string\",\"name\":\"_name\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"_symbol\",\"type\":\"string\"},{\"internalType\":\"uint256\",\"name\":\"_amount\",\"type\":\"uint256\"},{\"internalType\":\"string\",\"name\":\"_transaction\",\"type\":\"string\"},{\"internalType\":\"uint8[]\",\"name\":\"_v\",\"type\":\"uint8[]\"},{\"internalType\":\"bytes32[]\",\"name\":\"_r\",\"type\":\"bytes32[]\"},{\"internalType\":\"bytes32[]\",\"name\":\"_s\",\"type\":\"bytes32[]\"}],\"name\":\"unlockTokens\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"name\":\"wrappedTokenContracts\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"}]"
+const ServiceABI = "[{\"inputs\":[{\"internalType\":\"address[]\",\"name\":\"_validators\",\"type\":\"address[]\"},{\"internalType\":\"address\",\"name\":\"_feeColector\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"_fee\",\"type\":\"uint256\"}],\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"tokenContract\",\"type\":\"address\"}],\"name\":\"NewTokenDeployed\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"previousOwner\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"OwnershipTransferred\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"from\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"sourceTokenAddress\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"TokenBurn\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"from\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"sourceTokenAddress\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"TokenLock\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"from\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"sourceTokenAddress\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"TokenMint\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"from\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"sourceTokenAddress\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"TokenUnlock\",\"type\":\"event\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_owner\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"_token\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"_amount\",\"type\":\"uint256\"},{\"internalType\":\"uint8\",\"name\":\"_v\",\"type\":\"uint8\"},{\"internalType\":\"bytes32\",\"name\":\"_r\",\"type\":\"bytes32\"},{\"internalType\":\"bytes32\",\"name\":\"_s\",\"type\":\"bytes32\"}],\"name\":\"burn\",\"outputs\":[],\"stateMutability\":\"payable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"fee\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"string\",\"name\":\"\",\"type\":\"string\"}],\"name\":\"isProccessed\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_owner\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"_token\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"_amount\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"_deadline\",\"type\":\"uint256\"},{\"internalType\":\"uint8\",\"name\":\"_v\",\"type\":\"uint8\"},{\"internalType\":\"bytes32\",\"name\":\"_r\",\"type\":\"bytes32\"},{\"internalType\":\"bytes32\",\"name\":\"_s\",\"type\":\"bytes32\"}],\"name\":\"lock\",\"outputs\":[],\"stateMutability\":\"payable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_nativeTokenAddress\",\"type\":\"address\"},{\"internalType\":\"string\",\"name\":\"_name\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"_symbol\",\"type\":\"string\"},{\"internalType\":\"uint256\",\"name\":\"_amount\",\"type\":\"uint256\"},{\"internalType\":\"string\",\"name\":\"_transaction\",\"type\":\"string\"},{\"internalType\":\"uint8[]\",\"name\":\"_v\",\"type\":\"uint8[]\"},{\"internalType\":\"bytes32[]\",\"name\":\"_r\",\"type\":\"bytes32[]\"},{\"internalType\":\"bytes32[]\",\"name\":\"_s\",\"type\":\"bytes32[]\"}],\"name\":\"mintTokens\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"name\":\"nativeTokenContracts\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"owner\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"renounceOwnership\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"string\",\"name\":\"\",\"type\":\"string\"},{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"signaturesForTransaction\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"transferOwnership\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_token\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"_amount\",\"type\":\"uint256\"},{\"internalType\":\"string\",\"name\":\"_transaction\",\"type\":\"string\"},{\"internalType\":\"uint8[]\",\"name\":\"_v\",\"type\":\"uint8[]\"},{\"internalType\":\"bytes32[]\",\"name\":\"_r\",\"type\":\"bytes32[]\"},{\"internalType\":\"bytes32[]\",\"name\":\"_s\",\"type\":\"bytes32[]\"}],\"name\":\"unlockTokens\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"name\":\"wrappedTokenContracts\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"}]"
 
 // Service is an auto generated Go binding around an Ethereum contract.
 type Service struct {
@@ -169,6 +169,37 @@ func (_Service *ServiceTransactorRaw) Transfer(opts *bind.TransactOpts) (*types.
 // Transact invokes the (paid) contract method with params as input values.
 func (_Service *ServiceTransactorRaw) Transact(opts *bind.TransactOpts, method string, params ...interface{}) (*types.Transaction, error) {
 	return _Service.Contract.contract.Transact(opts, method, params...)
+}
+
+// Fee is a free data retrieval call binding the contract method 0xddca3f43.
+//
+// Solidity: function fee() view returns(uint256)
+func (_Service *ServiceCaller) Fee(opts *bind.CallOpts) (*big.Int, error) {
+	var out []interface{}
+	err := _Service.contract.Call(opts, &out, "fee")
+
+	if err != nil {
+		return *new(*big.Int), err
+	}
+
+	out0 := *abi.ConvertType(out[0], new(*big.Int)).(**big.Int)
+
+	return out0, err
+
+}
+
+// Fee is a free data retrieval call binding the contract method 0xddca3f43.
+//
+// Solidity: function fee() view returns(uint256)
+func (_Service *ServiceSession) Fee() (*big.Int, error) {
+	return _Service.Contract.Fee(&_Service.CallOpts)
+}
+
+// Fee is a free data retrieval call binding the contract method 0xddca3f43.
+//
+// Solidity: function fee() view returns(uint256)
+func (_Service *ServiceCallerSession) Fee() (*big.Int, error) {
+	return _Service.Contract.Fee(&_Service.CallOpts)
 }
 
 // IsProccessed is a free data retrieval call binding the contract method 0xe2ed78bb.
@@ -431,25 +462,25 @@ func (_Service *ServiceTransactorSession) TransferOwnership(newOwner common.Addr
 	return _Service.Contract.TransferOwnership(&_Service.TransactOpts, newOwner)
 }
 
-// UnlockTokens is a paid mutator transaction binding the contract method 0x56427ec2.
+// UnlockTokens is a paid mutator transaction binding the contract method 0xf7aaab22.
 //
-// Solidity: function unlockTokens(address _token, string _name, string _symbol, uint256 _amount, string _transaction, uint8[] _v, bytes32[] _r, bytes32[] _s) returns()
-func (_Service *ServiceTransactor) UnlockTokens(opts *bind.TransactOpts, _token common.Address, _name string, _symbol string, _amount *big.Int, _transaction string, _v []uint8, _r [][32]byte, _s [][32]byte) (*types.Transaction, error) {
-	return _Service.contract.Transact(opts, "unlockTokens", _token, _name, _symbol, _amount, _transaction, _v, _r, _s)
+// Solidity: function unlockTokens(address _token, uint256 _amount, string _transaction, uint8[] _v, bytes32[] _r, bytes32[] _s) returns()
+func (_Service *ServiceTransactor) UnlockTokens(opts *bind.TransactOpts, _token common.Address, _amount *big.Int, _transaction string, _v []uint8, _r [][32]byte, _s [][32]byte) (*types.Transaction, error) {
+	return _Service.contract.Transact(opts, "unlockTokens", _token, _amount, _transaction, _v, _r, _s)
 }
 
-// UnlockTokens is a paid mutator transaction binding the contract method 0x56427ec2.
+// UnlockTokens is a paid mutator transaction binding the contract method 0xf7aaab22.
 //
-// Solidity: function unlockTokens(address _token, string _name, string _symbol, uint256 _amount, string _transaction, uint8[] _v, bytes32[] _r, bytes32[] _s) returns()
-func (_Service *ServiceSession) UnlockTokens(_token common.Address, _name string, _symbol string, _amount *big.Int, _transaction string, _v []uint8, _r [][32]byte, _s [][32]byte) (*types.Transaction, error) {
-	return _Service.Contract.UnlockTokens(&_Service.TransactOpts, _token, _name, _symbol, _amount, _transaction, _v, _r, _s)
+// Solidity: function unlockTokens(address _token, uint256 _amount, string _transaction, uint8[] _v, bytes32[] _r, bytes32[] _s) returns()
+func (_Service *ServiceSession) UnlockTokens(_token common.Address, _amount *big.Int, _transaction string, _v []uint8, _r [][32]byte, _s [][32]byte) (*types.Transaction, error) {
+	return _Service.Contract.UnlockTokens(&_Service.TransactOpts, _token, _amount, _transaction, _v, _r, _s)
 }
 
-// UnlockTokens is a paid mutator transaction binding the contract method 0x56427ec2.
+// UnlockTokens is a paid mutator transaction binding the contract method 0xf7aaab22.
 //
-// Solidity: function unlockTokens(address _token, string _name, string _symbol, uint256 _amount, string _transaction, uint8[] _v, bytes32[] _r, bytes32[] _s) returns()
-func (_Service *ServiceTransactorSession) UnlockTokens(_token common.Address, _name string, _symbol string, _amount *big.Int, _transaction string, _v []uint8, _r [][32]byte, _s [][32]byte) (*types.Transaction, error) {
-	return _Service.Contract.UnlockTokens(&_Service.TransactOpts, _token, _name, _symbol, _amount, _transaction, _v, _r, _s)
+// Solidity: function unlockTokens(address _token, uint256 _amount, string _transaction, uint8[] _v, bytes32[] _r, bytes32[] _s) returns()
+func (_Service *ServiceTransactorSession) UnlockTokens(_token common.Address, _amount *big.Int, _transaction string, _v []uint8, _r [][32]byte, _s [][32]byte) (*types.Transaction, error) {
+	return _Service.Contract.UnlockTokens(&_Service.TransactOpts, _token, _amount, _transaction, _v, _r, _s)
 }
 
 // ServiceNewTokenDeployedIterator is returned from FilterNewTokenDeployed and is used to iterate over the raw logs and unpacked data for NewTokenDeployed events raised by the Service contract.
@@ -1051,6 +1082,160 @@ func (_Service *ServiceFilterer) WatchTokenLock(opts *bind.WatchOpts, sink chan<
 func (_Service *ServiceFilterer) ParseTokenLock(log types.Log) (*ServiceTokenLock, error) {
 	event := new(ServiceTokenLock)
 	if err := _Service.contract.UnpackLog(event, "TokenLock", log); err != nil {
+		return nil, err
+	}
+	event.Raw = log
+	return event, nil
+}
+
+// ServiceTokenMintIterator is returned from FilterTokenMint and is used to iterate over the raw logs and unpacked data for TokenMint events raised by the Service contract.
+type ServiceTokenMintIterator struct {
+	Event *ServiceTokenMint // Event containing the contract specifics and raw log
+
+	contract *bind.BoundContract // Generic contract to use for unpacking event data
+	event    string              // Event name to use for unpacking event data
+
+	logs chan types.Log        // Log channel receiving the found contract events
+	sub  ethereum.Subscription // Subscription for errors, completion and termination
+	done bool                  // Whether the subscription completed delivering logs
+	fail error                 // Occurred error to stop iteration
+}
+
+// Next advances the iterator to the subsequent event, returning whether there
+// are any more events found. In case of a retrieval or parsing error, false is
+// returned and Error() can be queried for the exact failure.
+func (it *ServiceTokenMintIterator) Next() bool {
+	// If the iterator failed, stop iterating
+	if it.fail != nil {
+		return false
+	}
+	// If the iterator completed, deliver directly whatever's available
+	if it.done {
+		select {
+		case log := <-it.logs:
+			it.Event = new(ServiceTokenMint)
+			if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
+				it.fail = err
+				return false
+			}
+			it.Event.Raw = log
+			return true
+
+		default:
+			return false
+		}
+	}
+	// Iterator still in progress, wait for either a data or an error event
+	select {
+	case log := <-it.logs:
+		it.Event = new(ServiceTokenMint)
+		if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
+			it.fail = err
+			return false
+		}
+		it.Event.Raw = log
+		return true
+
+	case err := <-it.sub.Err():
+		it.done = true
+		it.fail = err
+		return it.Next()
+	}
+}
+
+// Error returns any retrieval or parsing error occurred during filtering.
+func (it *ServiceTokenMintIterator) Error() error {
+	return it.fail
+}
+
+// Close terminates the iteration process, releasing any pending underlying
+// resources.
+func (it *ServiceTokenMintIterator) Close() error {
+	it.sub.Unsubscribe()
+	return nil
+}
+
+// ServiceTokenMint represents a TokenMint event raised by the Service contract.
+type ServiceTokenMint struct {
+	From               common.Address
+	SourceTokenAddress common.Address
+	Amount             *big.Int
+	Raw                types.Log // Blockchain specific contextual infos
+}
+
+// FilterTokenMint is a free log retrieval operation binding the contract event 0x93fa088ec3b37b93af5deae7b6bc55626e2c2dc086b1184bd2fefc28566d6392.
+//
+// Solidity: event TokenMint(address indexed from, address indexed sourceTokenAddress, uint256 amount)
+func (_Service *ServiceFilterer) FilterTokenMint(opts *bind.FilterOpts, from []common.Address, sourceTokenAddress []common.Address) (*ServiceTokenMintIterator, error) {
+
+	var fromRule []interface{}
+	for _, fromItem := range from {
+		fromRule = append(fromRule, fromItem)
+	}
+	var sourceTokenAddressRule []interface{}
+	for _, sourceTokenAddressItem := range sourceTokenAddress {
+		sourceTokenAddressRule = append(sourceTokenAddressRule, sourceTokenAddressItem)
+	}
+
+	logs, sub, err := _Service.contract.FilterLogs(opts, "TokenMint", fromRule, sourceTokenAddressRule)
+	if err != nil {
+		return nil, err
+	}
+	return &ServiceTokenMintIterator{contract: _Service.contract, event: "TokenMint", logs: logs, sub: sub}, nil
+}
+
+// WatchTokenMint is a free log subscription operation binding the contract event 0x93fa088ec3b37b93af5deae7b6bc55626e2c2dc086b1184bd2fefc28566d6392.
+//
+// Solidity: event TokenMint(address indexed from, address indexed sourceTokenAddress, uint256 amount)
+func (_Service *ServiceFilterer) WatchTokenMint(opts *bind.WatchOpts, sink chan<- *ServiceTokenMint, from []common.Address, sourceTokenAddress []common.Address) (event.Subscription, error) {
+
+	var fromRule []interface{}
+	for _, fromItem := range from {
+		fromRule = append(fromRule, fromItem)
+	}
+	var sourceTokenAddressRule []interface{}
+	for _, sourceTokenAddressItem := range sourceTokenAddress {
+		sourceTokenAddressRule = append(sourceTokenAddressRule, sourceTokenAddressItem)
+	}
+
+	logs, sub, err := _Service.contract.WatchLogs(opts, "TokenMint", fromRule, sourceTokenAddressRule)
+	if err != nil {
+		return nil, err
+	}
+	return event.NewSubscription(func(quit <-chan struct{}) error {
+		defer sub.Unsubscribe()
+		for {
+			select {
+			case log := <-logs:
+				// New log arrived, parse the event and forward to the user
+				event := new(ServiceTokenMint)
+				if err := _Service.contract.UnpackLog(event, "TokenMint", log); err != nil {
+					return err
+				}
+				event.Raw = log
+
+				select {
+				case sink <- event:
+				case err := <-sub.Err():
+					return err
+				case <-quit:
+					return nil
+				}
+			case err := <-sub.Err():
+				return err
+			case <-quit:
+				return nil
+			}
+		}
+	}), nil
+}
+
+// ParseTokenMint is a log parse operation binding the contract event 0x93fa088ec3b37b93af5deae7b6bc55626e2c2dc086b1184bd2fefc28566d6392.
+//
+// Solidity: event TokenMint(address indexed from, address indexed sourceTokenAddress, uint256 amount)
+func (_Service *ServiceFilterer) ParseTokenMint(log types.Log) (*ServiceTokenMint, error) {
+	event := new(ServiceTokenMint)
+	if err := _Service.contract.UnpackLog(event, "TokenMint", log); err != nil {
 		return nil, err
 	}
 	event.Raw = log

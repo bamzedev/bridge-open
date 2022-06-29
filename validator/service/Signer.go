@@ -31,18 +31,18 @@ func getContractFromTransaction(tx Transaction) *Service {
 	return contract
 }
 
-func findLockTransaction(tx Transaction) (Transaction, error) {
+func findDepositTransaction(tx Transaction) (Transaction, error) {
 	if(tx.IsBurn){
-		locks, err := getContractFromTransaction(tx).FilterTokenBurn(&bind.FilterOpts{}, nil, nil)
+		burns, err := getContractFromTransaction(tx).FilterTokenBurn(&bind.FilterOpts{}, nil, nil)
 		if err != nil {
 			panic(err)
 		}
 		found := false
-		for locks.Next() {
-			event := locks.Event
-			if event.Raw.TxHash.String() == tx.LockTransactionHash {
+		for burns.Next() {
+			event := burns.Event
+			if event.Raw.TxHash.String() == tx.DepositTransactionHash {
 				found = true
-				tx.LockTransactionHash = event.Raw.TxHash.String()
+				tx.DepositTransactionHash = event.Raw.TxHash.String()
 				tx.Recipient = event.From.String()
 				tx.TokenAddress = event.SourceTokenAddress.String()
 				tx.Amount = event.Amount.String()
@@ -61,9 +61,9 @@ func findLockTransaction(tx Transaction) (Transaction, error) {
 		found := false
 		for locks.Next() {
 			event := locks.Event
-			if event.Raw.TxHash.String() == tx.LockTransactionHash {
+			if event.Raw.TxHash.String() == tx.DepositTransactionHash {
 				found = true
-				tx.LockTransactionHash = event.Raw.TxHash.String()
+				tx.DepositTransactionHash = event.Raw.TxHash.String()
 				tx.Recipient = event.From.String()
 				tx.TokenAddress = event.SourceTokenAddress.String()
 				tx.Amount = event.Amount.String()
@@ -91,24 +91,23 @@ func signTransaction(tx Transaction) (Transaction, error) {
 	args := abi.Arguments{
 		{Type: uint256Type},
 	}
-	transaction := []byte(tx.LockTransactionHash)
+	transaction := []byte(tx.DepositTransactionHash)
 	addressToken := common.HexToAddress(tx.TokenAddress).Bytes()
-	var symbol []byte
-	var name []byte
-	if(tx.IsBurn){
-		name = []byte(tx.Name)
-		symbol = []byte(tx.Symbol)
-	}else{
-		name = []byte("Wrapped " + tx.Name)
-		symbol = []byte("W" + tx.Symbol)
-	}
+	var hash common.Hash
+	
 	
 	n, _ := new(big.Int).SetString(tx.Amount, 0)
 	n1, _ := new(big.Int).SetString(tx.ToChainId, 0)
 	amount, _ := args.Pack(n)
 	toChainId, _ := args.Pack(n1)
 	addressReceiver := common.HexToAddress(tx.Recipient).Bytes()
-	hash := crypto.Keccak256Hash(toChainId, transaction, addressToken, name, symbol, amount, addressReceiver)
+	if(tx.IsBurn){
+		hash = crypto.Keccak256Hash(toChainId, transaction, addressToken, amount, addressReceiver)
+	}else{
+		name := []byte("Wrapped " + tx.Name)
+		symbol := []byte("W" + tx.Symbol)
+		hash = crypto.Keccak256Hash(toChainId, transaction, addressToken, name, symbol, amount, addressReceiver)
+	}
 	msg := crypto.Keccak256([]byte("\x19Ethereum Signed Message:\n32"), hash.Bytes())
 	signature1, err := crypto.Sign(msg, validator1PrivateKey)
 	if err != nil {
@@ -127,12 +126,12 @@ func signTransaction(tx Transaction) (Transaction, error) {
 
 }
 func Sign(tx Transaction) (Transaction, error) {
-	lockTransaction, err := findLockTransaction(tx)
+	depositTransaction, err := findDepositTransaction(tx)
 	if err != nil {
 		return Transaction{}, err
 	}
 
-	signedTransaction, err := signTransaction(lockTransaction)
+	signedTransaction, err := signTransaction(depositTransaction)
 	if err != nil {
 		return Transaction{}, err
 	}
@@ -155,7 +154,7 @@ func UpdateClaimed(tx Transaction) (Transaction, error) {
 		panic(err)
 	}
 	contract, _ := NewService(contractAddress, client)
-	claimed, _ := contract.IsProccessed(&bind.CallOpts{}, tx.LockTransactionHash)
+	claimed, _ := contract.IsProccessed(&bind.CallOpts{}, tx.DepositTransactionHash)
 	tx.Claimed = claimed
 	return tx, nil
 }
