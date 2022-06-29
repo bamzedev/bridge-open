@@ -1,9 +1,8 @@
 //SPDX-License-Identifier: Unlicense
 pragma solidity ^0.8.0;
 import "./WrappedToken.sol";
-import "@openzeppelin/contracts/access/Ownable.sol";
 
-contract Bridge is Ownable{
+contract Bridge{
     address payable private feeCollector;
     uint256 public fee;
     mapping (string => bool) public isProccessed;
@@ -26,8 +25,17 @@ contract Bridge is Ownable{
     }
 
     modifier enoughFee() {
-        require(msg.value == fee, "not enough ether");
+        require(msg.value == fee, "Wrong msg value");
         _;
+    }
+    
+    function signatureExists(address[] memory _signatures, address _address) private pure returns (bool) {
+        for (uint i = 0; i < _signatures.length; i++) {
+          if (_signatures[i] == _address) {
+              return true;
+          }
+        }
+        return false;
     }
 
     modifier notProccessed(string memory _transaction) {
@@ -40,6 +48,7 @@ contract Bridge is Ownable{
         for (uint i = 0; i < v.length; i++) {
             address currentAddress = ecrecover(messageDigest, v[i], r[i], s[i]);
             require(isValidator[ecrecover(messageDigest, v[i], r[i], s[i])], "Wrong signature");
+            require(!signatureExists(signaturesForTransaction[_transaction], currentAddress), "Same signature");
             signaturesForTransaction[_transaction].push(currentAddress);            
         }
         require(signaturesForTransaction[_transaction].length>1, "Need at least 2 signatures");
@@ -49,7 +58,8 @@ contract Bridge is Ownable{
         bytes32 messageDigest = keccak256(abi.encodePacked("\x19Ethereum Signed Message:\n32",keccak256(abi.encodePacked(block.chainid,_transaction,_token, _amount,_receiver))));
         for (uint i = 0; i < v.length; i++) {
             address currentAddress = ecrecover(messageDigest, v[i], r[i], s[i]);
-         require(isValidator[ecrecover(messageDigest, v[i], r[i], s[i])], "Wrong signature");
+            require(isValidator[ecrecover(messageDigest, v[i], r[i], s[i])], "Wrong signature");
+            require(!signatureExists(signaturesForTransaction[_transaction], currentAddress), "Same signature");
             signaturesForTransaction[_transaction].push(currentAddress);            
         }
         require(signaturesForTransaction[_transaction].length>1, "Need at least 2 signatures");
@@ -62,8 +72,7 @@ contract Bridge is Ownable{
       emit NewTokenDeployed(wrappedTokenContracts[_nativeTokenAddress]);
     }
 
-    function unlockTokens(address _token, uint256 _amount, string memory _transaction, 
-    uint8[]memory _v, bytes32[]memory _r, bytes32[]memory _s) public notProccessed(_transaction){
+    function unlockTokens(address _token, uint256 _amount, string memory _transaction, uint8[]memory _v, bytes32[]memory _r, bytes32[]memory _s) public notProccessed(_transaction){
         validateUnlock(_transaction, _token, _amount, msg.sender, _v, _r, _s); 
         WrappedToken token = WrappedToken(_token);
         isProccessed[_transaction]=true;
@@ -94,7 +103,7 @@ contract Bridge is Ownable{
     function burn(address _owner, address _token, uint256 _amount, uint8 _v, bytes32 _r, bytes32 _s) public payable enoughFee{
         feeCollector.transfer(1);
         bytes32 messageDigest = keccak256(abi.encodePacked("\x19Ethereum Signed Message:\n32",keccak256(abi.encodePacked(_owner, address(this),_token,_amount))));
-        require(_owner == ecrecover(messageDigest, _v, _r, _s), "Wrong Signature");            
+        require(_owner == ecrecover(messageDigest, _v, _r, _s), "Wrong signature");            
         WrappedToken wtoken = WrappedToken(_token);
         wtoken.burnFrom(_owner, _amount);
         //Emits native token address from the other chain, so the other chain knows which token to unlock
