@@ -5,6 +5,16 @@
         "internalType": "address[]",
         "name": "_validators",
         "type": "address[]"
+      },
+      {
+        "internalType": "address",
+        "name": "_feeColector",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_fee",
+        "type": "uint256"
       }
     ],
     "stateMutability": "nonpayable",
@@ -45,7 +55,57 @@
         "type": "uint256"
       }
     ],
+    "name": "TokenBurn",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "from",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "sourceTokenAddress",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
     "name": "TokenLock",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "from",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "sourceTokenAddress",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "TokenMint",
     "type": "event"
   },
   {
@@ -112,64 +172,16 @@
     "type": "function"
   },
   {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "_token",
-        "type": "address"
-      },
+    "inputs": [],
+    "name": "fee",
+    "outputs": [
       {
         "internalType": "uint256",
-        "name": "_amount",
+        "name": "",
         "type": "uint256"
-      },
-      {
-        "internalType": "string",
-        "name": "_transaction",
-        "type": "string"
-      },
-      {
-        "internalType": "uint8[]",
-        "name": "_v",
-        "type": "uint8[]"
-      },
-      {
-        "internalType": "bytes32[]",
-        "name": "_r",
-        "type": "bytes32[]"
-      },
-      {
-        "internalType": "bytes32[]",
-        "name": "_s",
-        "type": "bytes32[]"
       }
     ],
-    "name": "claimTokens",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "_nativeTokenAddress",
-        "type": "address"
-      },
-      {
-        "internalType": "string",
-        "name": "_name",
-        "type": "string"
-      },
-      {
-        "internalType": "string",
-        "name": "_symbol",
-        "type": "string"
-      }
-    ],
-    "name": "deployContract",
-    "outputs": [],
-    "stateMutability": "nonpayable",
+    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -240,6 +252,16 @@
         "internalType": "address",
         "name": "_nativeTokenAddress",
         "type": "address"
+      },
+      {
+        "internalType": "string",
+        "name": "_name",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "_symbol",
+        "type": "string"
       },
       {
         "internalType": "uint256",

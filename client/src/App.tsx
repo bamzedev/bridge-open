@@ -23,7 +23,7 @@ function App() {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
 
   interface Transaction {
-    lockTransactionHash: string;
+    depositTransactionHash: string;
     claimTransactionHash: string;
     signatures: string[];
     tokenAddress: string;
@@ -34,6 +34,7 @@ function App() {
     toChainId: string;
     date: number;
     claimed: boolean;
+    isBurn: boolean;
   }
 
   async function requestAccount() {
@@ -108,7 +109,6 @@ function App() {
   useEffect(() => {
     window.ethereum.on("accountsChanged", function (accounts) {
       setWalletAddress(accounts[0]);
-      console.log(walletAddress);
     });
   }, []);
 
@@ -125,26 +125,25 @@ function App() {
   };
 
   const handleBridge = async (e, tokenToBridge, amount) => {
-    console.log("handle bridge")
-    console.log(tokenToBridge)
     e.preventDefault();
     let token = new ethers.Contract(tokenToBridge, wtAbi.abi, provider);
-    if ((await token.owner()) == bridgeContract.address) {
-      validateLockOrBurn(tokenToBridge, await burnTokens(provider, bridgeContract, token, amount));
+    let isBurn = await token.owner() == bridgeContract.address
+    if (isBurn) {
+      validateLockOrBurn(tokenToBridge, await burnTokens(provider, bridgeContract, token, amount), isBurn);
     } else {
-      validateLockOrBurn(tokenToBridge, await lockTokens(provider, bridgeContract, token, amount));
+      validateLockOrBurn(tokenToBridge, await lockTokens(provider, bridgeContract, token, amount), isBurn);
     }
   };
 
   const handleTokenClaim = async (txHash: string) => {
-    let lockTransaction = transactions.find((i) => i.lockTransactionHash === txHash);
-    if (lockTransaction !== undefined) {
-      await validateClaim(await claimTokens(provider, bridgeContract, lockTransaction));
+    let depositTransaction = transactions.find((i) => i.depositTransactionHash === txHash);
+    if (depositTransaction !== undefined) {
+      await validateClaim(await claimTokens(provider, bridgeContract, depositTransaction));
       updateHistory();
     }
   };
 
-  const validateLockOrBurn = async (tokenToBridge, receipt) => {
+  const validateLockOrBurn = async (tokenToBridge, receipt, isBurn) => {
     let toChainId;
     if (chainId == "3") {
       toChainId = "4";
@@ -153,7 +152,8 @@ function App() {
     }
     let wtc = new ethers.Contract(tokenToBridge, wtAbi.abi, provider);
     let symbol = await wtc.symbol();
-    validateDeposit(receipt.hash, chainId, toChainId, symbol).then(() => {
+    let name = await wtc.name();
+    validateDeposit(receipt.hash, chainId, toChainId, symbol, name, isBurn).then(() => {
       updateHistory();
     });
   };
