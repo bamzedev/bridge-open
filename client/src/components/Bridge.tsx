@@ -5,6 +5,14 @@ import { ethers } from "ethers";
 export function Bridge(props) {
   const [token, setToken] = useState("");
   const [amount, setAmount] = useState("");
+
+  const onSubmit =(e, token, amount) => {
+    // Prevents GET request/page refresh on submit
+    e.preventDefault();
+    e.target.reset();
+    props.handleBridge(e, token, amount);
+  };
+
   return (
     <Container className="mb-1" style={{ display: "flex", width: "78.5rem" }}>
       <Card className="text-center" bg="dark" text="light" style={{ width: "78rem" }}>
@@ -12,7 +20,7 @@ export function Bridge(props) {
           <Card.Title>Bridge Tokens</Card.Title>
           <Card.Text>Rinkeby ⇆ Ropsten</Card.Text>
         </Card.Body>
-        <Form onSubmit={(e)=> props.handleBridge(e, token, amount)}>
+        <Form onSubmit={(e)=> onSubmit(e, token, amount)}>
           <Form.Label>
             <InputGroup className="mb-3">
               <Form.Control placeholder="Token Address" aria-label="TokenAddress" onChange={(e) => setToken(e.target.value)} />

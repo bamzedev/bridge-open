@@ -171,7 +171,7 @@ function App() {
           <History transactions={transactions} chainId={chainId} handleTokenClaim={handleTokenClaim} switchNetwork={switchNetwork}></History>
         </Col>
       </Container>
-      <Footer provider={provider} bridgeContract={bridgeContract} testContract={testTokenContract}></Footer>
+      {/* <Footer provider={provider} bridgeContract={bridgeContract} testContract={testTokenContract}></Footer> */}
     </div>
   );
 }
